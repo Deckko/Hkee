@@ -1,28 +1,75 @@
 local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-local frame = Instance.new("Frame", screenGui)
-local executeButton = Instance.new("TextButton", frame)
-frame.Size = UDim2.new(0, 300, 0, 200)
-frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-frame.BackgroundTransparency = 0.2
-executeButton.Size = UDim2.new(0, 200, 0, 50)
-executeButton.Position = UDim2.new(0.5, -100, 0.5, -25)
-executeButton.Text = "Chạy Script"
-executeButton.Font = Enum.Font.SourceSansBold
-executeButton.TextSize = 20
-executeButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.2)
-local label = Instance.new("TextLabel", screenGui)
-label.Size = UDim2.new(0, 200, 0, 50)
-label.Position = UDim2.new(0, 10, 0, 10)
-label.BackgroundTransparency = 0.5
-label.BackgroundColor3 = Color3.new(0, 0, 0)
-label.TextColor3 = Color3.new(1, 1, 1)
-label.Text = "Người thực thi: AnKhang"
-label.Font = Enum.Font.SourceSansBold
-label.TextSize = 18
-executeButton.MouseButton1Click:Connect(function()
-    print("Script đã được thực thi bởi AnKhang!")
-    local character = player.Character or player.CharacterAdded:Wait()
-    character:WaitForChild("Humanoid").WalkSpeed = 50
+local gui = Instance.new("ScreenGui")
+gui.Name = "MenuGui"
+gui.Parent = player:WaitForChild("PlayerGui")
+local logo = Instance.new("ImageButton")
+logo.Name = "MenuLogo"
+logo.Size = UDim2.new(0, 50, 0, 50)
+logo.Position = UDim2.new(0, 10, 0, 10)
+logo.Image = "content://media/external/downloads/1000002227"
+logo.BackgroundTransparency = 1
+logo.Parent = gui
+local menu = Instance.new("Frame")
+menu.Name = "MenuFrame"
+menu.Size = UDim2.new(0, 250, 1, 0)
+menu.Position = UDim2.new(0, -250, 0, 0)
+menu.BackgroundColor3 = Color3.fromRGB(52, 58, 64)
+menu.BorderSizePixel = 0
+menu.Parent = gui
+local title = Instance.new("TextLabel")
+title.Name = "MenuTitle"
+title.Size = UDim2.new(1, 0, 0, 50)
+title.BackgroundTransparency = 1
+title.Text = "Chức Năng"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 24
+title.Parent = menu
+local options = {"Trang Chủ", "Giới Thiệu", "Liên Hệ", "Cài Đặt"}
+for i, option in ipairs(options) do
+    local button = Instance.new("TextButton")
+    button.Name = "Option" .. i
+    button.Size = UDim2.new(1, -20, 0, 40)
+    button.Position = UDim2.new(0, 10, 0, 60 + (i - 1) * 50)
+    button.BackgroundColor3 = Color3.fromRGB(73, 80, 87)
+    button.Text = option
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.SourceSans
+    button.TextSize = 20
+    button.Parent = menu
+end
+local footer = Instance.new("TextLabel")
+footer.Name = "MenuFooter"
+footer.Size = UDim2.new(1, 0, 0, 40)
+footer.Position = UDim2.new(0, 0, 1, -50)
+footer.BackgroundTransparency = 1
+footer.Text = "Người phát triển: AnKhang"
+footer.TextColor3 = Color3.fromRGB(200, 200, 200)
+footer.Font = Enum.Font.SourceSans
+footer.TextSize = 16
+footer.Parent = menu
+local dateTime = Instance.new("TextLabel")
+dateTime.Name = "DateTime"
+dateTime.Size = UDim2.new(1, 0, 0, 40)
+dateTime.Position = UDim2.new(0, 0, 1, -90)
+dateTime.BackgroundTransparency = 1
+dateTime.TextColor3 = Color3.fromRGB(200, 200, 200)
+dateTime.Font = Enum.Font.SourceSans
+dateTime.TextSize = 16
+dateTime.Parent = menu
+spawn(function()
+    while true do
+        local now = os.date("*t")
+        dateTime.Text = string.format("Ngày giờ: %02d/%02d/%04d %02d:%02d:%02d", now.day, now.month, now.year, now.hour, now.min, now.sec)
+        wait(1)
+    end
+end)
+local menuOpen = false
+logo.MouseButton1Click:Connect(function()
+    if menuOpen then
+        menu:TweenPosition(UDim2.new(0, -250, 0, 0), "Out", "Sine", 0.3, true)
+    else
+        menu:TweenPosition(UDim2.new(0, 0, 0, 0), "Out", "Sine", 0.3, true)
+    end
+    menuOpen = not menuOpen
 end)
